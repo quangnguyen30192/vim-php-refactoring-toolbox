@@ -18,10 +18,6 @@ if !exists('g:vim_php_refactoring_phpdoc')
     let g:vim_php_refactoring_phpdoc = 'PhpDoc'
 endif
 
-if !exists('g:vim_php_refactoring_use_default_mapping')
-    let g:vim_php_refactoring_use_default_mapping = 1
-endif
-
 if !exists('g:vim_php_refactoring_auto_validate')
     let g:vim_php_refactoring_auto_validate = 0
 endif
@@ -55,22 +51,20 @@ if !exists('g:vim_php_refactoring_make_setter_fluent')
 endif
 " }}}
 
-" Refactoring mapping {{{
-if g:vim_php_refactoring_use_default_mapping == 1
-    nnoremap <unique> <Leader>rlv :call PhpRenameLocalVariable()<CR>
-    nnoremap <unique> <Leader>rcv :call PhpRenameClassVariable()<CR>
-    nnoremap <unique> <Leader>eu :call PhpExtractUse()<CR>
-    nnoremap <unique> <Leader>rm :call PhpRenameMethod()<CR>
-    vnoremap <unique> <Leader>ec :call PhpExtractConst()<CR>
-    nnoremap <unique> <Leader>ep :call PhpExtractClassProperty()<CR>
-    vnoremap <unique> <Leader>em :call PhpExtractMethod()<CR>
-    nnoremap <unique> <Leader>np :call PhpCreateProperty()<CR>
-    nnoremap <unique> <Leader>du :call PhpDetectUnusedUseStatements()<CR>
-    vnoremap <unique> <Leader>== :call PhpAlignAssigns()<CR>
-    nnoremap <unique> <Leader>sg :call PhpCreateSettersAndGetters()<CR>
-    nnoremap <unique> <Leader>cog :call PhpCreateGetters()<CR>
-    nnoremap <unique> <Leader>da :call PhpDocAll()<CR>
-endif
+" commands {{{
+command! PhpRenameLocalVariable call PhpRenameLocalVariable()
+command! PhpRenameClassVariable call PhpRenameClassVariable()
+command! PhpExtractUse call PhpExtractUse()
+command! PhpRenameMethod call PhpRenameMethod()
+command! PhpExtractConst call PhpExtractConst()
+command! PhpExtractClassProperty call PhpExtractClassProperty()
+command! PhpExtractMethod call PhpExtractMethod()
+command! PhpCreateProperty call PhpCreateProperty()
+command! PhpDeleteProperty call PhpDetectUnusedUseStatements()
+command! PhpAlignAssigns call PhpAlignAssigns()
+command! PhpCreateSettersAndGetters call PhpCreateSettersAndGetters()
+command! PhpCreateGetters call PhpCreateGetters()
+command! PhpDocAll call PhpDocAll()
 " }}}
 
 " +--------------------------------------------------------------+
@@ -128,7 +122,7 @@ function! PhpCreateGetters() " {{{
     normal! gg
     let l:properties = []
     while search(s:php_regex_member_line, 'eW') > 0
-        normal! w"xye
+        normal! l"xye
         call add(l:properties, @x)
     endwhile
     for l:property in l:properties
@@ -150,7 +144,7 @@ function! PhpCreateSettersAndGetters() " {{{
     normal! gg
     let l:properties = []
     while search(s:php_regex_member_line, 'eW') > 0
-        normal! w"xye
+        normal! l"xye
         call add(l:properties, @x)
     endwhile
     for l:property in l:properties
